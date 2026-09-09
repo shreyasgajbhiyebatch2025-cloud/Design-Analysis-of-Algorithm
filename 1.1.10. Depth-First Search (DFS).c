@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_VERTICES 100
+
+// Graph represented using adjacency list
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+
+Node* adjList[MAX_VERTICES];
+int visited[MAX_VERTICES];
+
+// Function to create a new adjacency list node
+Node* createNode(int vertex) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to add an edge to the graph
+void addEdge(int u, int v) {
+    Node* newNode = createNode(v);
+    newNode->next = adjList[u];
+    adjList[u] = newNode;
+    
+}
+
+// Function to sort the adjacency list for each vertex
+void sortAdjList(int V) {
+    for (int i = 0; i < V; i++) {
+        Node* current = adjList[i];
+        if (current == NULL) continue;
+        
+        // Bubble sort on the linked list for simple sorting
+        int swapped;
+        Node* ptr1;
+        Node* lptr = NULL;
+        
+        do {
+            swapped = 0;
+            ptr1 = adjList[i];
+            
+            while (ptr1->next != lptr) {
+                if (ptr1->vertex > ptr1->next->vertex) {
+                    int temp = ptr1->vertex;
+                    ptr1->vertex = ptr1->next->vertex;
+                    ptr1->next->vertex = temp;
+                    swapped = 1;
+                }
+                ptr1 = ptr1->next;
+            }
+            lptr = ptr1;
+        } while (swapped);
+	}
+    
+}
+
+// Depth-First Search (DFS) function
+void DFS(int start) {
+    visited[start] = 1;
+    printf("%d ", start);
+    
+    Node* temp = adjList[start];
+    while (temp != NULL) {
+        int connectedVertex = temp->vertex;
+        if (!visited[connectedVertex]) {
+            DFS(connectedVertex);
+        }
+}
